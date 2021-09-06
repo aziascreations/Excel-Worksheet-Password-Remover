@@ -21,7 +21,7 @@ To use this tool you can either visit [aziascreations.github.io/Excel-Worksheet-
 
 ## Video Demo
 
-Will be added through GitHub since Grip can't render them properly.
+[![Demo - Youtube Video](https://img.youtube.com/vi/tMO9ahYELI0/hqdefault.jpg)](https://www.youtube.com/watch?v=tMO9ahYELI0)
 
 ## License
 
