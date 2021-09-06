@@ -1,8 +1,6 @@
 # Excel Worksheet Password Remover
 
-This project aims to simplify the removal of passwords on Excel's Worksheet.
-
-[How]
+This project aims to simplify the removal of passwords on Excel's Worksheet by leaving the task of editing the XML files on an Excel document to your browser.
 
 ## Preface
 
@@ -19,7 +17,14 @@ By using this tool, you accept the entire responsability that comes with using s
 
 ## Using the tool
 
+To use this tool you can either visit [aziascreations.github.io/Excel-Worksheet-Password-Remover](https://aziascreations.github.io/Excel-Worksheet-Password-Remover) or download the repository.
+
+## Video Demo
+
+Will be added through GitHub since Grip can't render them properly.
 
 ## License
 
+[Unlicense](LICENSE)
 
+This license does not apply to [Bootstrap](https://getbootstrap.com/) and [JSZip](https://stuk.github.io/jszip/).

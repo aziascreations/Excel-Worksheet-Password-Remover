@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="/favicon.ico"> 
+    <meta name="description" content="A simple offline tool that can help remove passwords from Excel Worksheets.">
+	<title>Excel Worksheet Password Remover</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+	<link href="./css/styles.css" rel="stylesheet">
+	<!-- Prevents some weird errors caused by caching -->
+	<meta http-equiv="cache-control" content="max-age=0" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+	<meta http-equiv="pragma" content="no-cache" />
+</head>
+<body class="d-flex h-100 text-center text-white bg-dark">
+	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+		<header class="mb-auto">
+			<div>
+				<h3 class="float-md-center mb-0">Excel Worksheet Password Remover</h3>
+			</div>
+		</header>
+		<main class="px-4">
+			<div id="warning">
+				<h2>Preamble</h2>
+				<p class="lead">
+					This tool is intended to be used with files for which you have the express authorization to remove the password from.<br>
+					If you don't have said authorisation, you should refer to the proper authority for more information on the matter.<br>
+					I am only providing a generic tool, you are the one who decides what you do with it and that take the responsability of using it !<br><br>
+					<b class="ucase">No data is sent over the internet</b> while using this tool as everything is done inside of your browser using JavaScript.<br>
+					However, for legal reason, you should refrain from using this tool if your file contains sensitive informations unless you have received authorization from the appropriate authorities to avoid any potential legal issue on your side.<br><br>
+					This tool <b class="ucase">will not</b> reveal the original password since they are secured and not stored in clear text, it will only <b class="ucase">remove</b> them.<br><br>
+					By using this tool, you accept the entire responsability that comes with using said tool as it is provided “as is”, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement.<br><br>
+					<a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white" onclick="acceptTerms();">I accept the responsability</a>
+				</p>
+			</div>
+			<div id="file-select" hidden>
+				<h2>File Selection</h2>
+				<p class="lead">
+					Click on the button below to select a <b>.xslx</b> or <b>.xlsm</b> file on your computer.<br><br>
+					<a href="#" class="btn btn-lg btn-primary fw-bold border-white" onclick="selectFile();">Select File</a>
+					<!-- Element hidden to only use it via JS -->
+					<input id="input-file" type="file" style="display: none"/>
+				</p>
+			</div>
+			<div id="file-confirm" hidden>
+				<h2>Confirmation Needed</h2>
+				<p class="lead">
+					<span id="file-confirm-text"></span><br><br>
+					<a href="#" class="btn btn-lg btn-danger fw-bold border-white" onclick="restart();">No, I want another file</a>&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="#" class="btn btn-lg btn-success fw-bold border-white" onclick="startProcessing();">Yes, process this file</a>
+				</p>
+			</div>
+			<div id="file-process-waiting" hidden>
+				<h2>Please wait...</h2>
+				<p class="lead">
+					<span id="file-process-waiting-text">
+						The file is being analysed, and if passwords are found, you will be prompted to remove them.<br><br>
+						If this process takes more than 30s or a minute, it may be because of an unexpected error, which means this tool could not process your file.
+					</span><br><br>
+					<a href="#" class="btn btn-lg btn-danger fw-bold border-white" onclick="restart();">Cancel everything</a>
+				</p>
+			</div>
+			<div id="file-process-finished" hidden>
+				<h2>File analysed</h2>
+				<p class="lead">
+					<span id="file-process-finished-text">The file has been analysed and is ready to have its password removed.</span><br><br>
+					<span id="file-process-finished-subtext">By clicking on the <b><i>"Remove passwords"</i></b> button, you will download a new version of your file without the passwords.</span><br><br>
+					<a href="#" class="btn btn-lg btn-danger fw-bold border-white" onclick="restart();">Cancel everything</a>&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="#" class="btn btn-lg btn-success fw-bold border-white" onclick="downloadProcessedFile();">Remove passwords</a>
+				</p>
+				<!-- Used to download the final file with a specific name -->
+				<a id="zip-downloader-tag" href="" hidden></a>
+			</div>
+			<div id="error" hidden>
+				<h2>An Error Has Occured</h2>
+				<p class="lead">
+					<span id="error-text"></span><br><br>
+					<a href="#" class="btn btn-lg btn-warning fw-bold border-white" onclick="restart();">Restart</a>
+				</p>
+			</div>
+			<div id="end" hidden>
+				<h2>Thank you for using this tool</h2>
+				<p class="lead">
+					We hope everything worked out perfectly for you and it helped you along the way.<br><br>
+					<a href="#" class="btn btn-lg btn-info fw-bold border-white" onclick="restart();">Restart</a>
+				</p>
+			</div>
+		</main>
+		<footer class="mt-auto text-white-50">
+			<p>Tool created by <a href="https://github.com/aziascreations" class="text-white">BOZET Herwin</a> using <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a> and <a href="https://stuk.github.io/jszip/" class="text-white">JSZip</a>.<br>View source code on <a href="https://github.com/aziascreations/Excel-Worksheet-Password-Remover" class="text-white">GitHub</a>.</p>
+		</footer>
+	</div>
+	<!-- Library used to manipulate ZIP files -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js" integrity="sha512-xQBQYt9UcgblF6aCMrwU1NkVA7HCXaSN2oq0so80KO+y68M+n64FOcqgav4igHe6D5ObBLIf68DWv+gfBowczg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+		const excelFileRegex = /^.*\.xls[xm]$/gi;
+		const excelWorksheetRegex = /^xl\/worksheets\/.*.xml$/gi;
+		
+		var outputZip;
+		var outputZipFilename = "default-filename.error.zip";
+		var filesTotalCount = 0;
+		var filesProcessedCount = 0;
+		var passwordsRemoved = 0;
+		
+		function acceptTerms() {
+			document.getElementById("warning").hidden = true;
+			document.getElementById("file-select").hidden = false;
+		}
+		
+		function selectFile() {
+			document.getElementById("input-file").click();
+			fileSelectionHandler();
+		}
+		
+		/* Waits for a file to be selected */
+		function fileSelectionHandler() {
+			if(document.getElementById("input-file").files.length == 0) {
+				setTimeout(fileSelectionHandler, 500);
+				return;
+			} else if(document.getElementById("input-file").files.length > 1) {
+				handleError("You selected more than one file !");
+			} else {
+				//console.log(document.getElementById("input-file").files[0].name);
+				if(document.getElementById("input-file").files[0].name.match(excelFileRegex)) {
+					document.getElementById("file-select").hidden = true;
+					document.getElementById("file-confirm-text").textContent = "You selected a file named \""+document.getElementById("input-file").files[0].name+"\", are you sure this is the right file ?";
+					document.getElementById("file-confirm").hidden = false;
+				} else {
+					handleError("The file you selected does not appear to be an Excel file !");
+				}
+			}
+		}
+		
+		function handleError(errorMessage) {
+			// Hiding everything
+			document.getElementById("warning").hidden = true;
+			document.getElementById("file-select").hidden = true;
+			document.getElementById("file-confirm").hidden = true;
+			document.getElementById("file-process-waiting").hidden = true;
+			document.getElementById("file-process-finished").hidden = true;
+			document.getElementById("end").hidden = true;
+			
+			// Preparing and showing error message
+			document.getElementById("error-text").textContent = errorMessage;
+			document.getElementById("error").hidden = false;
+		}
+		
+		function restart() {
+			location.reload();
+		}
+		
+		function startProcessing() {
+			document.getElementById("file-confirm").hidden = true;
+			document.getElementById("file-process-waiting").hidden = false;
+			// Done this way so as to not block the rendering of the "Please wait text".
+			setTimeout(processFile, 100);
+		}
+		
+		function processFile() {
+			outputZipFilename = document.getElementById('input-file').files[0].name;
+			outputZipExtension = "."+outputZipFilename.split(".").pop();
+			outputZipFilename = outputZipFilename.substring(0, outputZipFilename.length - outputZipExtension.length);
+			outputZipFilename = outputZipFilename + "_no-password" + outputZipExtension;
+			
+			JSZip.loadAsync(document.getElementById('input-file').files[0]).then(function(zip) {
+				outputZip = new JSZip();
+				filesTotalCount = 0;
+				filesProcessedCount = 0;
+				passwordsRemoved = 0;
+				
+				for(const[fileKey, fileValue] of Object.entries(zip.files)) {
+					filesTotalCount++;
+					
+					if(fileKey.match(excelWorksheetRegex)) {
+						//console.debug("Checking: "+fileKey);
+						fileValue.async("string").then(function(fileText) {
+							var startIndex = fileText.indexOf('<sheetProtection ');
+							
+							if(startIndex === -1) {
+								// No password found.
+								outputZip.file(fileKey, fileText);
+								//console.debug("Analysed: "+fileKey);
+							} else {
+								// Removing the password.
+								var endIndex = fileText.indexOf('/>', startIndex) + 2;
+								fileText = fileText.replace(fileText.substr(startIndex, endIndex-startIndex), "");
+								outputZip.file(fileKey, fileText);
+								//console.debug("Processed: "+fileKey);
+								passwordsRemoved++;
+							}
+							
+							filesProcessedCount++;
+						});
+					} else {
+						// Other files.
+						//console.debug("Ignoring: "+fileKey);
+						fileValue.async("string").then(function(fileText) {
+							outputZip.file(fileKey, fileText);
+							//console.debug("Copied: "+fileKey);
+							filesProcessedCount++;
+						});
+					}
+				}
+				
+				//console.debug("Waiting for all the files to be processed !");
+				setTimeout(waitFilesBeingProcessed, 50);
+			}, function (e) {
+				handleError("Failed to extract the content of the file in the browser ! ("+e.message+")");
+			});
+		}
+		
+		function waitFilesBeingProcessed() {
+			//console.debug("Processed "+filesProcessedCount+" file(s) out of "+filesTotalCount);
+			
+			if(filesTotalCount != filesProcessedCount) {
+				setTimeout(waitFilesBeingProcessed, 50);
+			} else {
+				//console.debug("Done, now switching the page !");
+				if(passwordsRemoved > 0) {
+					document.getElementById("file-process-waiting").hidden = true;
+					document.getElementById("file-process-finished-text").textContent = "The file has been analysed and "+passwordsRemoved+" password"+(passwordsRemoved>1 ? "s were" : " was")+" found and is ready to be removed !";
+					document.getElementById("file-process-finished").hidden = false;
+				} else {
+					handleError("No password(s) were found in the Excel document !");
+				}
+			}
+		}
+		
+		function downloadProcessedFile() {
+			outputZip.generateAsync({type:"base64"}).then(function(base64) {
+				link = document.getElementById("zip-downloader-tag")
+    			link.download = outputZipFilename;
+    			link.href = 'data:application/zip;base64,' + base64;
+    			link.click();
+				document.getElementById("file-process-finished").hidden = true;
+				document.getElementById("end").hidden = false;
+			}, function(err) {
+				console.error(err);
+				handleError("An error has occured while generating your file, please check the console for more info !");
+			});
+		}
+	</script>
+</body>
+</html>
