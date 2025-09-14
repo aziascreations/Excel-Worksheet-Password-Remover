@@ -19,7 +19,11 @@ By using this tool, you accept full responsibility, and that it is provided “a
 
 
 ## Using the tool
-To use this tool you can either visit *"[nibblepoker.lu/tools/excel-password-remover](https://nibblepoker.lu/tools/excel-password-remover/)"*, download the repository, or the [latest release](https://github.com/aziascreations/Excel-Worksheet-Password-Remover/releases).
+To use this tool you can do the following things:
+* Visit *"[aziascreations.github.io/Excel-Worksheet-Password-Remover](https://aziascreations.github.io/Excel-Worksheet-Password-Remover/)"*
+* Visit *"[nibblepoker.lu/tools/excel-password-remover](https://nibblepoker.lu/tools/excel-password-remover/)"*
+* Download the [latest release](https://github.com/aziascreations/Excel-Worksheet-Password-Remover/releases)
+* Download the repository
 
 
 ## Video Demo
