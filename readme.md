@@ -1,30 +1,32 @@
 # Excel Worksheet Password Remover
+Small web application from which you can easily remove a password from an Excel worksheet. \
+It works by leaving the task of editing the XML files on an Excel document to your browser instead to keep everything local.
 
-This project aims to simplify the removal of passwords on Excel's Worksheet by leaving the task of editing the XML files on an Excel document to your browser.
+This repository simply is a rendered versions of the various templates and JS modules in 
+[Web-NibblePoker](https://github.com/aziascreations/Web-NibblePoker). \
+As such, the code in this repository is pre-minified and harder to read.
 
-## Preface
+The old readable version of this tool can be still found in the [legacy-v1.0.0](https://github.com/aziascreations/Excel-Worksheet-Password-Remover/tree/legacy-v1.0.0) branch.
 
-This tool is intended to be used with files for which you have the express authorization to remove the password from.<br>
-If you don't have said authorisation, you should refer to the proper authority for more information on the matter.<br>
-I am only providing a generic tool, you are the one who decides what you do with it and that take the responsability of using it !
 
-**NO DATA IS SENT OVER THE INTERNET** while using this tool as everything is done inside of your browser using JavaScript.<br>
-However, for legal reason, you should refrain from using this tool if your file contains sensitive informations unless you have received authorization from the appropriate authorities to avoid any potential legal issue on your side.
+## Disclaimer
+This tool should only be used with files you have the express permission to unlock.
 
-This tool **WILL NOT** reveal the original password since they are secured and not stored in clear text, it will only **REMOVE** them.
+All password removal is done locally in your browser, and no data is sent online. \
+The original password cannot be revealed as it’s secure by design and not stored in plain text; it simply gets removed.
 
-By using this tool, you accept the entire responsability that comes with using said tool as it is provided “as is”, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement.
+By using this tool, you accept full responsibility, and that it is provided “as is” without any warranty.
+
 
 ## Using the tool
+To use this tool you can either visit *"[nibblepoker.lu/tools/excel-password-remover](https://nibblepoker.lu/tools/excel-password-remover/)"*, download the repository, or the [latest release](https://github.com/aziascreations/Excel-Worksheet-Password-Remover/releases).
 
-To use this tool you can either visit [aziascreations.github.io/Excel-Worksheet-Password-Remover](https://aziascreations.github.io/Excel-Worksheet-Password-Remover) or download the repository.
 
 ## Video Demo
+[![Demo - Youtube Video](./Images/DemoVideoPreviewMini.png)](https://youtu.be/7KDcE3jevNs)
 
-[![Demo - Youtube Video](https://img.youtube.com/vi/tMO9ahYELI0/hqdefault.jpg)](https://www.youtube.com/watch?v=tMO9ahYELI0)
 
 ## License
-
-[Unlicense](LICENSE)
-
-This license does not apply to [Bootstrap](https://getbootstrap.com/) and [JSZip](https://stuk.github.io/jszip/).
+This tool uses the [JSZip](https://stuk.github.io/jszip/) library, which is licensed under the
+[MIT license](https://github.com/Stuk/jszip/blob/main/LICENSE.markdown).
+The rest of this tool's code is released in the [public domain](https://github.com/aziascreations/Web-NibblePoker).
